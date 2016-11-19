@@ -5,6 +5,4 @@ A node.js script that outputs i3 bar protocol json. Meant to be used as the "sta
 * [Font-Awesome Font](http://fontawesome.io/) is installed
 * [Google Play Music Desktop App](https://www.googleplaymusicdesktopplayer.com/) is installed
 
-
-
-![Example Output](http://imgur.com/a/DuAYb)
+![Example Output](http://i.imgur.com/kVyoKCn.png)
