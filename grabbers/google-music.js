@@ -14,7 +14,7 @@ module.exports = function getGooglePlayMusic() {
                 resolve(`${percentageBar} ${googleMusicObject.song.title} - ${googleMusicObject.song.artist}`);
             }
         } catch (e) {
-            reject(e);
+            resolve(void(0));
         }
     });
 };
