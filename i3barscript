@@ -51,8 +51,20 @@ const FindAndOutputStats = function() {
 			"align": "left"
 		});
 		if (batteryValue) {
+			let batteryIcon;
+			if(batteryValue > 0.90) {
+				batteryIcon = "";
+			} else if (batteryValue > 0.65) {
+				batteryIcon = "";
+			} else if (batteryValue > 0.35) {
+				batteryIcon = "";
+			} else if (batteryValue > 0.10) {
+				batteryIcon = "";
+			} else {
+				batteryIcon = "";
+			}
 			outputArray.push({
-				"full_text": ` ${(batteryValue*100).toFixed(0)}%`,
+				"full_text": `${batteryIcon} ${(batteryValue*100).toFixed(0)}%`,
 				"min_width": " 100%",
 				"align": "left"
 			});
