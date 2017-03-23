@@ -49,7 +49,7 @@ module.exports = () => {
         }
         catch(err)
         {
-            reject(err);
+            return reject(err);
         }
     });
 };
