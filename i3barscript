@@ -5,6 +5,7 @@ const getDiskUsage = require("./grabbers/disk-usage");
 const getCpuUsage = require("./grabbers/cpu-usage");
 const getMemUsage = require("./grabbers/mem-usage");
 const getMusic = require('./grabbers/google-music');
+const getBatteryPercentage = require('battery-level');
 
 //Get and output stats on a loop
 const FindAndOutputStats = function() {
@@ -15,12 +16,14 @@ const FindAndOutputStats = function() {
 					getCpuUsage(), 
 					getMemUsage(),
 					getMusic(),
+					getBatteryPercentage(),
 				]).then(([
 							timeValue,
 							diskUsageValue,
 							cpuUsageValue,
 							memUsageValue,
 							musicValue,
+							batteryValue,
 						 ]) => {
 		//Format and output results
 		const outputArray = [];
@@ -47,6 +50,13 @@ const FindAndOutputStats = function() {
 			"min_width": " 936.01GB/936.01GB",
 			"align": "left"
 		});
+		if (batteryValue) {
+			outputArray.push({
+				"full_text": ` ${(batteryValue*100).toFixed(0)}%`,
+				"min_width": " 100%",
+				"align": "left"
+			});
+		}
 		outputArray.push({
 			"full_text": timeValue,
 			"align": "right",
