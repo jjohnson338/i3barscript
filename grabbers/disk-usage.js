@@ -2,7 +2,7 @@ const diskspaceChecker = require("diskspace");
 
 module.exports = function getDiskUsage(){
 	return new Promise((resolve, reject) =>	{
-		diskspaceChecker.check("/", (err, total, free, status) => {
+		diskspaceChecker.check("/", (err, {total, free, status}) => {
 		if(err) {
 			reject(err);
 		}
