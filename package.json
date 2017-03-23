@@ -9,7 +9,7 @@
   "author": "Jared Johnson",
   "license": "ISC",
   "dependencies": {
-    "battery-level": "^2.0.1",
+    "battery-level": "2.0.1",
     "diskspace": "2.0.0",
     "moment": "2.18.1"
   }
