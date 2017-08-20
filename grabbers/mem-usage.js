@@ -1,11 +1,10 @@
-const os = require("os");
+const  execSync = require("child_process").execSync;
 
-module.exports = function getMemUsage(){
-	return new Promise((resolve) => {
-        const freedGigabytes = (os.freemem()/(1000*1000*1000)).toFixed(2);
-        const totalGigabytes = (os.totalmem()/(1000*1000*1000)).toFixed(2);
-        const usedGigabytes = (totalGigabytes - freedGigabytes).toFixed(2);
-			
-        resolve(`${usedGigabytes}GB / ${totalGigabytes}GB`);
-	});
-};
+module.exports = (async function getMemUsage(){
+  const used = await parseInt(execSync(`free | awk 'FNR == 2 {print $3}'`));
+  const total = await parseInt(execSync(`free | awk 'FNR == 2 {print $2}'`));
+  const usedGigabytes = (used/1000/1000).toFixed(2);
+  const totalGigabytes = (total/1000/1000).toFixed(2);
+
+  return `${usedGigabytes}GB / ${totalGigabytes}GB`;
+});
