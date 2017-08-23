@@ -5,77 +5,81 @@ const getDiskUsage = require("./grabbers/disk-usage");
 const getCpuUsage = require("./grabbers/cpu-usage");
 const getMemUsage = require("./grabbers/mem-usage");
 const getMusic = require('./grabbers/google-music');
-const getBatteryPercentage = require('battery-level');
+const getBattery = require('./grabbers/battery');
 
 //Get and output stats on a loop
 const FindAndOutputStats = function() {
 
-	Promise.all([
-					getTime(), 
-					getDiskUsage(), 
-					getCpuUsage(), 
-					getMemUsage(),
-					getMusic(),
-					getBatteryPercentage().catch((err)=>{}),
-				]).then(([
-							timeValue,
-							diskUsageValue,
-							cpuUsageValue,
-							memUsageValue,
-							musicValue,
-							batteryValue,
-						 ]) => {
-		//Format and output results
-		const outputArray = [];
+  Promise.all([
+    getTime(), 
+    getDiskUsage(), 
+    getCpuUsage(), 
+    getMemUsage(),
+    getMusic(),
+    getBattery().catch((err)=>{}),
+  ]).then(([
+    timeValue,
+    diskUsageValue,
+    cpuUsageValue,
+    memUsageValue,
+    musicValue,
+    batteryValue,
+  ]) => {
+    //Format and output results
+    const outputArray = [];
 
-		if (musicValue) {
-			outputArray.push({
-				"full_text": musicValue,
-				"color": "#9be52a",
-				"align": "left"
-			});
-		}
-		outputArray.push({
-			"full_text": ` ${("0"+cpuUsageValue).slice(-5)}%`,
-			"min_width": " 100%",
-			"align": "left"
-		});
-		outputArray.push({
-			"full_text": ` ${memUsageValue}`,
-			"min_width": " 16.78GB/16.78GB",
-			"align": "left"
-		});
-		outputArray.push({
-			"full_text": ` ${diskUsageValue}`,
-			"min_width": " 936.01GB/936.01GB",
-			"align": "left"
-		});
-		if (batteryValue) {
-			let batteryIcon;
-			if(batteryValue > 0.90) {
-				batteryIcon = "";
-			} else if (batteryValue > 0.65) {
-				batteryIcon = "";
-			} else if (batteryValue > 0.35) {
-				batteryIcon = "";
-			} else if (batteryValue > 0.10) {
-				batteryIcon = "";
-			} else {
-				batteryIcon = "";
-			}
-			outputArray.push({
-				"full_text": `${batteryIcon} ${(batteryValue*100).toFixed(0)}%`,
-				"min_width": " 100%",
-				"align": "left"
-			});
-		}
-		outputArray.push({
-			"full_text": timeValue,
-			"align": "right",
-		});
-		console.log(`,${JSON.stringify(outputArray)}`);
-		setTimeout(FindAndOutputStats, 1000);
-	});
+    if (musicValue) {
+      outputArray.push({
+        "full_text": musicValue,
+        "color": "#9be52a",
+        "align": "left"
+      });
+    }
+    outputArray.push({
+      "full_text": ` ${("0"+cpuUsageValue).slice(-5)}%`,
+      "min_width": " 100%",
+      "align": "left"
+    });
+    outputArray.push({
+      "full_text": ` ${memUsageValue}`,
+      "min_width": " 16.78GB/16.78GB",
+      "align": "left"
+    });
+    outputArray.push({
+      "full_text": ` ${diskUsageValue}`,
+      "min_width": " 936.01GB/936.01GB",
+      "align": "left"
+    });
+    if (batteryValue) {
+      const {charging, percentage} = batteryValue;
+      let batteryIcon;
+      if(charging) {
+        batteryIcon = "";
+      } else if(percentage > 90) {
+        batteryIcon = "";
+      } else if (percentage > 65) {
+        batteryIcon = "";
+      } else if (percentage > 35) {
+        batteryIcon = "";
+      } else if (percentage > 10) {
+        batteryIcon = "";
+      } else {
+        batteryIcon = "";
+      }
+
+      outputArray.push({
+        "full_text": `${batteryIcon} ${percentage}%`,
+        "min_width": " 100%",
+        "align": "right"
+      });
+    }
+    outputArray.push({
+      "full_text": timeValue,
+      "align": "right",
+    });
+    console.log(`,${JSON.stringify(outputArray)}`);
+    setTimeout(FindAndOutputStats, 1000);
+  });
 }
 console.log(JSON.stringify({ "version": 1 }));
 console.log('[');
