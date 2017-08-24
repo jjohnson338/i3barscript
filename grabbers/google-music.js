@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 
-module.exports = (function getGooglePlayMusic() {
+module.exports = (() => {
   //Constantly updated object containing music state
   const state = {
     playing: false,
@@ -52,7 +52,8 @@ module.exports = (function getGooglePlayMusic() {
       tryLater();
     }
   }
-
+  
+  // Get this train rolling
   tryConnect();
 
   const getMusicBar = () => {
@@ -64,6 +65,7 @@ module.exports = (function getGooglePlayMusic() {
       return `${percentageBar} ${state.track} - ${state.artist}`;
     }
   };
+
   return {
     getMusicBar,
   };
