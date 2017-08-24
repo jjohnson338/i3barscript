@@ -1,18 +1,16 @@
-const diskspaceChecker = require("diskspace");
+const diskspace = require("diskspace");
 
-module.exports = function getDiskUsage(){
-	return new Promise((resolve, reject) =>	{
-		diskspaceChecker.check("/", (err, diskStuff) => {
-		if(err) {
-			return reject(err);
-		}
-		const {total, free, status} = diskStuff;
-        const freeGigabytes = (free / (1000*1000*1000)).toFixed(2);
-        const totalGigabytes = (total / (1000*1000*1000)).toFixed(2);
-        const usedGigabytes = (totalGigabytes - freeGigabytes).toFixed(2);
+module.exports = async function getDiskUsage(){
+  const getDiskspace = new Promise((resolve, reject) =>	{
+    diskspace.check("/", (err, diskStuff) => {
+      if(err) return reject(err);
+      resolve(diskStuff);
+    });	
+  });
+  const {total, free, status} = await getDiskspace;
+  const freeGigabytes = (free / (1000*1000*1000)).toFixed(2);
+  const totalGigabytes = (total / (1000*1000*1000)).toFixed(2);
+  const usedGigabytes = (totalGigabytes - freeGigabytes).toFixed(2);
 
-		const diskUsage = `${usedGigabytes}GB / ${totalGigabytes}GB`;
-		resolve(diskUsage);
-		});
-	});
+  return `${usedGigabytes}GB / ${totalGigabytes}GB`;
 };
