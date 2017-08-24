@@ -15,7 +15,7 @@ const FindAndOutputStats = function() {
     getDiskUsage(), 
     getCpuUsage(), 
     getMemUsage(),
-    getMusic(),
+    getMusic.getMusicBar(),
     getBattery().catch((err)=>{}),
   ]).then(([
     timeValue,
