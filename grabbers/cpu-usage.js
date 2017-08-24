@@ -28,28 +28,25 @@ const cpuAverage = () => {
   return {idle: totalIdle / cpus.length,  total: totalTick / cpus.length};
 };
 
-module.exports = () => {
-    return new Promise((resolve, reject) => {
-        const startMeasure = cpuAverage();
-        try{
-            setTimeout(function() { 
+module.exports = (async () => {
+  const startMeasure = cpuAverage();
+  const sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  };
 
-                //Grab second Measure
-                const endMeasure = cpuAverage(); 
+  const collectCpuLoad = async () => { 
+    await sleep(100);
+    //Grab second Measure
+    const endMeasure = cpuAverage(); 
 
-                //Calculate the difference in idle and total time between the measures
-                const idleDifference = endMeasure.idle - startMeasure.idle;
-                const totalDifference = endMeasure.total - startMeasure.total;
+    //Calculate the difference in idle and total time between the measures
+    const idleDifference = endMeasure.idle - startMeasure.idle;
+    const totalDifference = endMeasure.total - startMeasure.total;
 
-                //Calculate the average percentage CPU usage
-                const percentageCPU = 100 - ~~(100 * idleDifference / totalDifference);
-                        
-                resolve(percentageCPU.toFixed(2));
-            }, 100);
-        }
-        catch(err)
-        {
-            return reject(err);
-        }
-    });
-};
+    //Calculate the average percentage CPU usage
+    const percentageCPU = 100 - ~~(100 * idleDifference / totalDifference);
+
+    return percentageCPU.toFixed(2);
+  };
+  return await collectCpuLoad();
+});
