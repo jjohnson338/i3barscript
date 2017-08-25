@@ -54,7 +54,7 @@ const FindAndOutputStats = function() {
       const {charging, percentage} = batteryValue;
       let batteryIcon;
       if(charging) {
-        batteryIcon = "";
+        batteryIcon = " ";
       } else if(percentage > 90) {
         batteryIcon = "";
       } else if (percentage > 65) {
@@ -70,7 +70,7 @@ const FindAndOutputStats = function() {
       outputArray.push({
         "full_text": `${batteryIcon} ${percentage}%`,
         "min_width": " 100%",
-        "align": "right"
+        "align": "left"
       });
     }
     outputArray.push({
