@@ -6,6 +6,7 @@ const getCpuUsage = require("./grabbers/cpu-usage");
 const getMemUsage = require("./grabbers/mem-usage");
 const getMusic = require('./grabbers/google-music');
 const getBattery = require('./grabbers/battery');
+const getPackages = require('./grabbers/packages');
 
 //Get and output stats on a loop
 const FindAndOutputStats = function() {
@@ -17,6 +18,7 @@ const FindAndOutputStats = function() {
     getMemUsage(),
     getMusic.getMusicBar(),
     getBattery().catch((err)=>{}),
+    getPackages(),
   ]).then(([
     timeValue,
     diskUsageValue,
@@ -24,6 +26,7 @@ const FindAndOutputStats = function() {
     memUsageValue,
     musicValue,
     batteryValue,
+    packagesValue,
   ]) => {
     //Format and output results
     const outputArray = [];
@@ -35,6 +38,11 @@ const FindAndOutputStats = function() {
         "align": "left"
       });
     }
+    outputArray.push({
+      "full_text": packagesValue.pacman,
+      "min_width": " 200",
+      "align": "left"
+    });
     outputArray.push({
       "full_text": ` ${("0"+cpuUsageValue).slice(-5)}%`,
       "min_width": " 100%",
