@@ -7,18 +7,20 @@ const getMemUsage = require("./grabbers/mem-usage");
 const getMusic = require('./grabbers/google-music');
 const getBattery = require('./grabbers/battery');
 const getPackages = require('./grabbers/packages');
+const getAudioVolume = require('./grabbers/audio');
 
 //Get and output stats on a loop
 const FindAndOutputStats = function() {
 
   Promise.all([
-    getTime(), 
-    getDiskUsage(), 
-    getCpuUsage(), 
+    getTime(),
+    getDiskUsage(),
+    getCpuUsage(),
     getMemUsage(),
     getMusic.getMusicBar(),
     getBattery().catch((err)=>{}),
     getPackages(),
+    getAudioVolume(),
   ]).then(([
     timeValue,
     diskUsageValue,
@@ -27,6 +29,7 @@ const FindAndOutputStats = function() {
     musicValue,
     batteryValue,
     packagesValue,
+    audioVolumeValue,
   ]) => {
     //Format and output results
     const outputArray = [];
@@ -78,6 +81,18 @@ const FindAndOutputStats = function() {
       outputArray.push({
         "full_text": `${batteryIcon} ${percentage}%`,
         "min_width": " 100%",
+        "align": "left"
+      });
+      const { mainSinkVolume } = audioVolumeValue;
+      const audioIcon =
+        audioVolumeValue > 66
+        ? ""
+        : audioVolumeValue > 33
+        ? ""
+        : "";
+      outputArray.push({
+        "full_text": `${audioIcon} ${mainSinkVolume}%`,
+        "min_width": " 100%",
         "align": "left"
       });
     }

@@ -1,9 +1,7 @@
-const  execSync = require("child_process").execSync;
+const execSync = require("child_process").execSync;
+const formatBuffer = require("../utils/utils");
 
-module.exports = async function getBatStats(){
-  const formatBuffer = (buf) => {
-    return buf.toString().split('\n').join(''); 
-  };
+module.exports = async function getBarStats(){
   const charging = await formatBuffer(
     execSync(`upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/state/ {print $2}'`)) == "charging";
   const percentage = await formatBuffer(
