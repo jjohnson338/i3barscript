@@ -46,8 +46,12 @@ const FindAndOutputStats = function() {
       "min_width": " 200",
       "align": "left"
     });
+    const cpuOutputText = (
+      (cpuUsageValue < 100 ? " " : "")
+      + cpuUsageValue < 10 ? "0" : ""
+      + cpuUsageValue).slice(-3);
     outputArray.push({
-      "full_text": ` ${("0"+cpuUsageValue).slice(-5)}%`,
+      "full_text": ` ${cpuOutputText}%`,
       "min_width": " 100%",
       "align": "left"
     });
