@@ -14,9 +14,13 @@ const avgArray = (arr) => {
 };
 
 module.exports = async function getCPUUsage(){
-  const cpuLoad = 100 - parseInt(formatBuffer(
+  const result = parseInt(formatBuffer(
     execSync(`top -bn 1 | grep "id," | awk '{print $8}'`)
-  ));
+  ), 10);
+
+  if (isNaN(result)) return avgArray(smoothingArray);
+
+  const cpuLoad = 100 - result;
 
   if (smoothingArray.length < smoothingLength) {
     smoothingArray.push(cpuLoad);
